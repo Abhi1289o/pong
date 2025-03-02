@@ -2,6 +2,7 @@ import pygame
 import random
 
 pygame.init()
+font = pygame.font.SysFont('arial.ttf', 25)
 
 class PongGame:
     def __init__(self):
@@ -40,15 +41,17 @@ class PongGame:
 
         # Ball movement
         self.center[0] += self.xdir * 5
-        self.center[1] += self.ydir * 5
+        self.center[1] += self.ydir * 3
 
         # Collision with paddles
-        if self.center[0] <= self.xpos1 + self.rw and self.ypos1 <= self.center[1] <= self.ypos1 + self.rl:
+        if self.center[0] <= self.xpos1 + 30 and self.ypos1 <= self.center[1] <= self.ypos1 + self.rl:
+            self.score += 1
             self.xdir *= -1
             self.ydir = ((self.center[1] - (self.ypos1 + self.rl // 2)) / 10)  # Adjust bounce angle
 
         if self.center[0] >= self.xpos2 - 10 and self.ypos2 <= self.center[1] <= self.ypos2 + self.rl:
             self.xdir *= -1
+            self.score += 1
             self.ydir = ((self.center[1] - (self.ypos2 + self.rl // 2)) / 10)
 
         # Collision with top and bottom walls
@@ -56,7 +59,7 @@ class PongGame:
             self.ydir *= -1
 
         # Check if ball goes out of bounds (game over)
-        if self.center[0] < self.xpos1 +self.rw or self.center[0] > self.xpos2:
+        if self.center[0] < self.xpos1 + 20 or self.center[0] > self.xpos2:
             return True, self.score
 
         self.clock.tick(30)
@@ -68,6 +71,8 @@ class PongGame:
         pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(self.xpos1, self.ypos1, 20, 100))
         pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(self.xpos2, self.ypos2, 20, 100))
         pygame.draw.circle(self.display, (255, 255, 255), tuple(self.center), 10, 0)
+        text = font.render("Score: " + str(self.score), True, (255, 255, 255))
+        self.display.blit(text, [200, 0])
         pygame.display.update()
 
 if __name__ == "__main__":

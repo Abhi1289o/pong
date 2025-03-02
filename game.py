@@ -30,13 +30,13 @@ class PongGame:
         # Paddle movement
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] and self.ypos1 > 0:
-            self.ypos1 -= 5
+            self.ypos1 -= 15
         if keys[pygame.K_s] and self.ypos1 < self.h - self.rl:
-            self.ypos1 += 5
+            self.ypos1 += 15
         if keys[pygame.K_UP] and self.ypos2 > 0:
-            self.ypos2 -= 5
+            self.ypos2 -= 15
         if keys[pygame.K_DOWN] and self.ypos2 < self.h - self.rl:
-            self.ypos2 += 5
+            self.ypos2 += 15
 
         # Ball movement
         self.center[0] += self.xdir * 5
@@ -56,10 +56,10 @@ class PongGame:
             self.ydir *= -1
 
         # Check if ball goes out of bounds (game over)
-        if self.center[0] < self.xpos1 or self.center[0] > self.xpos2 + self.rw:
+        if self.center[0] < self.xpos1 +self.rw or self.center[0] > self.xpos2:
             return True, self.score
 
-        self.clock.tick(10)
+        self.clock.tick(30)
         self.draw()
         return False, self.score
 
